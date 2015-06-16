@@ -27,15 +27,15 @@
 ------------
 
 ```bash
-	$ git clone https://github.com/serega3000/test-job
-	$ cd test-job/
-	$ composer install
+    $ git clone https://github.com/serega3000/test-job
+    $ cd test-job/
+    $ composer install
 ```
 
 Запуск
 -----
 
 ```bash
-$ cd symfony-demo/
-$ php app/console server:run
+    $ cd test-job/
+    $ php app/console server:run
 ```
