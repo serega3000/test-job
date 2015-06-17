@@ -8,20 +8,12 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Summary</th>
-                <td>{{ event.summary|md2html }}</td>
+                <th>Description</th>
+                <td>{{ event.description|md2html }}</td>
             </tr>
             <tr>
-                <th>Content</th>
-                <td>{{ event.content|md2html }}</td>
-            </tr>
-            <tr>
-                <th>Author</th>
-                <td><p>{{ event.authorEmail }}</p></td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td><p>{{ event.publishedAt|date('Y-m-d H:i:s') }}</p></td>
+                <th>StartTime</th>
+                <td><p>{{ event.startTime|date('Y-m-d H:i:s') }}</p></td>
             </tr>
         </tbody>
     </table>
@@ -35,7 +27,7 @@
     </div>
 
     <div class="section">
-        {{ include('admin/blog/_form.html.twig', {
+        {{ include('admin/event/_form.html.twig', {
             form: delete_form,
             button_label: 'Delete event',
             button_css: 'btn btn-lg btn-block btn-danger',

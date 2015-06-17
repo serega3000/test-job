@@ -8,29 +8,21 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Title</th>
-                <th><i class="fa fa-user"></i> Author</th>
-                <th><i class="fa fa-calendar"></i> Published At</th>
-                <th><i class="fa fa-cogs"></i> Actions</th>
+                <th>Заголовок</th>
+                <th><i class="fa fa-calendar"></i> Начало</th>
+                <th><i class="fa fa-cogs"></i> Действия</th>
             </tr>
         </thead>
         <tbody>
         {% for event in events %}
             <tr>
                 <td>{{ event.title }}</td>
-                <td>{{ event.authorEmail }}</td>
-                <td>{% if event.publishedAt %}{{ event.publishedAt|date('Y-m-d H:i') }}{% endif %}</td>
+                <td>{% if event.startTime %}{{ event.startTime|date('Y-m-d H:i') }}{% endif %}</td>
                 <td>
                     <div class="item-actions">
                         <a href="{{ path('admin_event_show', { id: event.id }) }}" class="btn btn-sm btn-default">
                             {{ 'action.show'|trans }}
                         </a>
-
-                        {% if event.isAuthor(app.user) %}
-                            <a href="{{ path('admin_event_edit', { id: event.id }) }}" class="btn btn-sm btn-primary">
-                                <i class="fa fa-edit"></i> {{ 'action.edit'|trans }}
-                            </a>
-                        {% endif %}
                     </div>
                 </td>
             </tr>
