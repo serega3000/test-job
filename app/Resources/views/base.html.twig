@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Symfony Demo Application{% endblock %}</title>
+        <title>{% block title %}Планировщик событий{% endblock %}</title>
 
         {% block stylesheets %}
         {# uncomment the following lines to compile SCSS assets with Assetic
@@ -35,7 +35,7 @@
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('homepage') }}">
-                                Symfony Demo Application
+                               Тестовое задание
                             </a>
 
                             <button type="button" class="navbar-toggle"
@@ -49,31 +49,10 @@
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                {% block header_navigation_links %}
-                                    <li>
-                                        <a href="{{ path('blog_index') }}">
-                                            <i class="fa fa-home"></i> Homepage
-                                        </a>
-                                    </li>
-
-                                    {# The 'app.user' condition is required to avoid issues in 404 and 500 error pages
-                                       As routing is done before security, error pages are not covered by any firewall.
-                                       This means you can't use is_granted() directly on these pages.
-                                       See http://symfony.com/doc/current/cookbook/security/form_login_setup.html#avoid-common-pitfalls
-                                    #}
-                                    {% if app.user and is_granted('ROLE_ADMIN') %}
-                                        <li>
-                                            <a href="{{ path('admin_post_index') }}">
-                                                <i class="fa fa-lock"></i> Backend
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                {% endblock %}
-
                                 {% if app.user %}
                                     <li>
                                         <a href="{{ path('security_logout') }}">
-                                            <i class="fa fa-sign-out"></i> Logout
+                                            <i class="fa fa-sign-out"></i> Выйти
                                         </a>
                                     </li>
                                 {% endif %}
@@ -96,13 +75,11 @@
                             <div class="section about">
                                 <div class="well well-lg">
                                     <p>
-                                        This is a <strong>demo application</strong> built in the
-                                        Symfony Framework to illustrate the recommended way of
-                                        developing Symfony applications.
+                                        Это простой планировщик событий, сделанный в качестве тестового задания
                                     </p>
                                     <p>
-                                        For more information, check out the
-                                        <a href="http://symfony.com/doc">Symfony Documentation</a>.
+                                        Исходные коды приложения доступны на
+                                        <a href="https://github.com/serega3000/test-job">Github</a>.
                                     </p>
                                 </div>
                             </div>
