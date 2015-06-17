@@ -1,0 +1,52 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body_id 'admin_event_index' %}
+
+{% block main %}
+    <h1>{{ 'title.event_list'|trans }}</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th><i class="fa fa-user"></i> Author</th>
+                <th><i class="fa fa-calendar"></i> Published At</th>
+                <th><i class="fa fa-cogs"></i> Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.title }}</td>
+                <td>{{ event.authorEmail }}</td>
+                <td>{% if event.publishedAt %}{{ event.publishedAt|date('Y-m-d H:i') }}{% endif %}</td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('admin_event_show', { id: event.id }) }}" class="btn btn-sm btn-default">
+                            {{ 'action.show'|trans }}
+                        </a>
+
+                        {% if event.isAuthor(app.user) %}
+                            <a href="{{ path('admin_event_edit', { id: event.id }) }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-edit"></i> {{ 'action.edit'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('admin_event_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus"></i> {{ 'action.create_event'|trans }}
+        </a>
+    </div>
+
+    {{ parent() }}
+
+    {{ show_source_code(_self) }}
+{% endblock %}

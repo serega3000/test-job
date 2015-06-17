@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body_id 'admin_event_show' %}
+
+{% block main %}
+    <h1>{{ event.title }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Summary</th>
+                <td>{{ event.summary|md2html }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ event.content|md2html }}</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td><p>{{ event.authorEmail }}</p></td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td><p>{{ event.publishedAt|date('Y-m-d H:i:s') }}</p></td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        <a href="{{ path('admin_event_edit', { id: event.id }) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-edit"></i> Edit contents
+        </a>
+    </div>
+
+    <div class="section">
+        {{ include('admin/blog/_form.html.twig', {
+            form: delete_form,
+            button_label: 'Delete event',
+            button_css: 'btn btn-lg btn-block btn-danger',
+            include_back_to_home_link: false
+        }, with_context = false) }}
+    </div>
+
+    {{ show_source_code(_self) }}
+{% endblock %}
