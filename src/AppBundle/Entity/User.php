@@ -118,4 +118,9 @@ class User implements UserInterface
         // if you had a plainPassword property, you'd nullify it here
         // $this->plainPassword = null;
     }
+    
+    public function isBoss()
+    {
+        return false !== array_search('ROLE_BOSS', $this->getRoles());
+    }
 }
