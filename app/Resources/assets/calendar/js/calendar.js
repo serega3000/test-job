@@ -131,6 +131,9 @@ if(!String.prototype.formatNum) {
 		onAfterModalHidden: function(events) {
 			// Inside this function 'this' is the calendar instance
 		},
+		onAfterEventsListShowed: function(events) {
+			// Inside this function 'this' is the calendar instance
+		},
 		// -------------------------------------------------------------
 		// INTERNAL USE ONLY. DO NOT ASSIGN IT WILL BE OVERRIDDEN ANYWAY
 		// -------------------------------------------------------------
@@ -1188,7 +1191,6 @@ if(!String.prototype.formatNum) {
 		var tick_position = cell.data('cal-row');
 
 		that.fadeOut('fast');
-
 		slider.slideUp('fast', function() {
 			var event_list = $('.events-list', cell);
 			slider.html(self.options.templates['events-list']({
@@ -1203,7 +1205,8 @@ if(!String.prototype.formatNum) {
 					slider.slideUp('fast');
 					self.activecell = 0;
 				});
-			});
+                self.options.onAfterEventsListShowed.call(this, slider);
+			});            
 		});
 
 		// Wait 400ms before updating the modal & attach the mouseenter&mouseleave(400ms is the time for the slider to fade out and slide up)
