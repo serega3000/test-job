@@ -21,6 +21,9 @@ use AppBundle\Entity\Event;
 
 /**
  * Контроллер для управления календарем
+ * @Route("/admin/event")
+ * @Security("has_role('ROLE_ADMIN')")
+ * 
  */
 class CalendarController extends Controller
 {
@@ -47,7 +50,6 @@ class CalendarController extends Controller
     public function newAction(Request $request)
     {
         $event = new Event();
-        $event->setAuthorEmail($this->getUser()->getEmail());
         $form = $this->createForm(new EventType(), $event);
 
         $form->handleRequest($request);
@@ -95,7 +97,6 @@ class CalendarController extends Controller
      *
      * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_event_edit")
      * @Method({"GET", "POST"})
-     * @Security("user.isBoss")
      */
     public function editAction(Event $event, Request $request)
     {
@@ -107,7 +108,6 @@ class CalendarController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $event->setSlug($this->get('slugger')->slugify($event->getTitle()));
             $em->flush();
 
             return $this->redirectToRoute('admin_event_edit', array('id' => $event->getId()));
@@ -125,7 +125,6 @@ class CalendarController extends Controller
      *
      * @Route("/{id}", name="admin_event_delete")
      * @Method("DELETE")
-     * @Security("user.isBoss()")
      *
      * The Security annotation value is an expression (if it evaluates to false,
      * the authorization mechanism will prevent the user accessing this resource).
