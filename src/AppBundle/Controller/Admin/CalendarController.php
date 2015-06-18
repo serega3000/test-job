@@ -50,6 +50,15 @@ class CalendarController extends Controller
     public function newAction(Request $request)
     {
         $event = new Event();
+        
+        if(isset($_GET['date']))
+        {
+            $date_arr = explode("-", $_GET['date']);
+            $defaultTime = new \DateTime();
+            $defaultTime->setDate($date_arr[0], $date_arr[1], $date_arr[2]);            
+            $event->setStartTime($defaultTime);   
+        }
+        
         $form = $this->createForm(new EventType(), $event);
 
         $form->handleRequest($request);

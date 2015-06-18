@@ -20,6 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class EventType extends AbstractType
 {
+    
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
