@@ -56,6 +56,10 @@ assetic:
         scssphp:
             # the formatter must be the FQCN (don't use the 'compressed' value)
             formatter: "Leafo\\ScssPhp\\Formatter\\Compressed"
+        lessphp:
+            apply_to: "\.less$"
+            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
+            formatter: "compressed"             
 
 # Doctrine Configuration (used to access databases and manipulate their information)
 doctrine:
