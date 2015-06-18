@@ -37,7 +37,7 @@ class CalendarController extends Controller
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('AppBundle:Event')->findAll();
 
-        return $this->render('admin/event/index.html.twig', array('events' => $events));
+        return $this->render('admin/event/index.html.twig', array('events' => $events, 'calendar_class' => $this->getUser()->isBoss() ? "boss" : "no-boss"));
     }
 
     /**
@@ -97,6 +97,7 @@ class CalendarController extends Controller
      *
      * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_event_edit")
      * @Method({"GET", "POST"})
+     * @Security("user.isBoss()")
      */
     public function editAction(Event $event, Request $request)
     {
@@ -125,6 +126,7 @@ class CalendarController extends Controller
      *
      * @Route("/{id}", name="admin_event_delete")
      * @Method("DELETE")
+     * @Security("user.isBoss()")
      *
      * The Security annotation value is an expression (if it evaluates to false,
      * the authorization mechanism will prevent the user accessing this resource).
@@ -143,6 +145,77 @@ class CalendarController extends Controller
         }
 
         return $this->redirectToRoute('admin_event_index');
+    }
+    
+    /**
+     * @Route("/data", name="admin_event_data")
+     * @Method("GET")
+     */
+    public function dataAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $events = $em->getRepository('AppBundle:Event')->findAll();
+        
+        $returnValue = array();
+        
+        foreach($events as $event)
+        {
+            $time = strtotime($event->getStartTime()->format('r'));            
+            /* @var $event Event */
+            $returnValue[] = array(
+                'id' => $event->getId(),
+                'title' => $event->getTitle(),
+                'url' => "/admin/event/".$event->getId(),
+                'class' => 'event-info',
+                'start' => $time."000",
+                'end' => ($time + 100)."000"
+            );
+        }
+        
+        $data = json_encode( array('success'=>1,'result'=>$returnValue) );
+        $headers = array( 'Content-type' => 'application-json; charset=utf8' );
+        $response = new \Symfony\Component\HttpFoundation\Response( $data, 200, $headers );
+        return $response;        
+    }
+ 
+    /**
+     * @Route("/update_date/{id}", name="admin_event_update_date")
+     * @Method("POST")
+     * @Security("user.isBoss()")
+     */    
+    public function updateDateAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('AppBundle:Event')->find($id);        
+        
+        $new_date = $_POST['date'];
+        $date_arr = explode("-", $new_date);
+        
+        $time = new \DateTime($event->getStartTime()->format('r'));
+        $time->setDate($date_arr[0], $date_arr[1], $date_arr[2]);
+        
+        $event->setStartTime($time);        
+        
+        $em->flush();
+        
+        $time1 = strtotime($event->getStartTime()->format('r'));                 
+        
+        $returnValue = array(
+            'success' => 1,
+            'data' => array(
+                'id' => $event->getId(),
+                'title' => $event->getTitle(),
+                'url' => "/admin/event/".$event->getId(),
+                'class' => 'event-info',
+                'start' => $time1."000",
+                'end' => ($time1 + 100)."000"                
+            )            
+        );        
+        
+        $data = json_encode($returnValue);
+        $headers = array( 'Content-type' => 'application-json; charset=utf8' );
+        $response = new \Symfony\Component\HttpFoundation\Response( $data, 200, $headers );
+        return $response;            
     }
 
     /**
